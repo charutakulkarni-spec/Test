@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project - AI Agent Foundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="project.css">
+</head>
+<body>
+    <div class="app project-app">
+        <!-- Primary Navigation (Icon Menu) -->
+        <aside class="primary-nav">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white"/>
+                    <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2"/>
+                    <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2"/>
+                </svg>
+            </div>
+
+            <div class="nav-icons">
+                <button class="icon-btn" title="Home">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="white" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn active" title="Projects">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" fill="currentColor"/>
+                        <rect x="3" y="14" width="7" height="7" fill="currentColor"/>
+                        <rect x="14" y="3" width="7" height="7" fill="currentColor"/>
+                        <rect x="14" y="14" width="7" height="7" fill="currentColor"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Documents">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="white" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Agents">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="8" r="4" stroke="white" stroke-width="2"/>
+                        <path d="M6 21V19C6 17.9391 6.42143 16.9217 7.17157 16.1716C7.92172 15.4214 8.93913 15 10 15H14C15.0609 15 16.0783 15.4214 16.8284 16.1716C17.5786 16.9217 18 17.9391 18 19V21" stroke="white" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Deployment">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="2"/>
+                        <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2"/>
+                        <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Database">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" stroke="white" stroke-width="2"/>
+                        <rect x="3" y="14" width="7" height="7" stroke="white" stroke-width="2"/>
+                        <rect x="14" y="3" width="7" height="7" stroke="white" stroke-width="2"/>
+                        <rect x="14" y="14" width="7" height="7" stroke="white" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Refresh">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 4V10H7" stroke="white" stroke-width="2"/>
+                        <path d="M23 20V14H17" stroke="white" stroke-width="2"/>
+                        <path d="M20.49 9C19.9828 7.56678 19.1209 6.28536 17.9845 5.27542C16.8482 4.26548 15.4745 3.55976 13.9917 3.22426C12.5089 2.88875 10.9652 2.93434 9.50481 3.35677C8.04437 3.77921 6.71475 4.56542 5.64 5.64L1 10M23 14L18.36 18.36C17.2853 19.4346 15.9556 20.2208 14.4952 20.6432C13.0348 21.0657 11.4911 21.1112 10.0083 20.7757C8.52547 20.4402 7.1518 19.7345 6.01547 18.7246C4.87913 17.7146 4.01717 16.4332 3.51 15" stroke="white" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="3" stroke="white" stroke-width="2"/>
+                        <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="white" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" title="Help">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/>
+                        <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13" stroke="white" stroke-width="2"/>
+                        <circle cx="12" cy="17" r="1" fill="white"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar">A</div>
+            </div>
+        </aside>
+
+        <!-- Project Main Content -->
+        <main class="project-main-content">
+            <div class="project-title-container">
+                <div class="project-title-header">
+                    <button class="back-btn" id="backBtn" title="Back to projects">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <h1 id="projectName">Project 1</h1>
+                    <span class="project-status-badge">Draft</span>
+                </div>
+                <button class="btn btn-primary publish-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                    </svg>
+                    Publish to catalog
+                </button>
+            </div>
+
+            <div class="project-content">
+                <!-- Elements of agent buildings section -->
+                <div class="elements-section">
+                    <h2 class="section-title">Elements of agent buildings</h2>
+                    <div class="elements-grid">
+                        <div class="element-card">
+                            <h3 class="element-card-title text-label">Agents</h3>
+                            <p class="element-card-description subtext">Created to perform specific tasks and actions.</p>
+                        </div>
+                        <div class="element-card">
+                            <h3 class="element-card-title text-label">Tools</h3>
+                            <p class="element-card-description subtext">Provides reference data to agents to learn from.</p>
+                        </div>
+                        <div class="element-card">
+                            <h3 class="element-card-title text-label">Interfaces</h3>
+                            <p class="element-card-description subtext">Defines how users interacts with agent in TD Console.</p>
+                        </div>
+                        <div class="element-card">
+                            <h3 class="element-card-title text-label">Integrations</h3>
+                            <p class="element-card-description subtext">Defines how users interact with agents outside of TD Console.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs Section -->
+                <div class="tabs-section">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="agents">Agents</button>
+                        <button class="tab-btn" data-tab="tools">Tools</button>
+                        <button class="tab-btn" data-tab="integrations">Integrations</button>
+                        <button class="tab-btn" data-tab="interfaces">Interfaces</button>
+                    </div>
+                    <button class="btn create-agent-btn" id="createBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span id="createBtnText">Create agent</span>
+                    </button>
+                </div>
+
+                <!-- Agents Table -->
+                <div class="agents-table-container tab-content" id="agents-tab">
+                    <table class="agents-table">
+                        <thead>
+                            <tr>
+                                <th class="subtext">Agent Name ▼</th>
+                                <th class="subtext">Referencing Agents ▼</th>
+                                <th class="subtext">Model Name ▼</th>
+                                <th class="subtext">Tools ▼</th>
+                                <th class="subtext">Last Updated (PST) ▼</th>
+                                <th class="subtext">Update By ▼</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="#" class="agent-name text-primary">Analytics Agent</a></td>
+                                <td class="text">--</td>
+                                <td class="text">Claude 3.5 Sonnet</td>
+                                <td><span class="tool-badge">Tool 1</span></td>
+                                <td class="text">May 16, 1990, 5:00 PM</td>
+                                <td class="text">Sam Gillis</td>
+                                <td>
+                                    <button class="menu-btn">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                                            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                                            <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tools Table -->
+                <div class="agents-table-container tab-content" id="tools-tab" style="display: none;">
+                    <table class="agents-table">
+                        <thead>
+                            <tr>
+                                <th class="subtext">Tool Name ▼</th>
+                                <th class="subtext">Category ▼</th>
+                                <th class="subtext">Type ▼</th>
+                                <th class="subtext">Updated By ▼</th>
+                                <th class="subtext">Updated On ▼</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="#" class="tool-name text-primary">Tool 1</a></td>
+                                <td class="text">TD-managed</td>
+                                <td class="text">Text</td>
+                                <td class="text">Sam Gillis</td>
+                                <td class="text">May 16, 1990, 5:00 PM</td>
+                                <td>
+                                    <button class="menu-btn">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                                            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                                            <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Integrations Table (placeholder) -->
+                <div class="agents-table-container tab-content" id="integrations-tab" style="display: none;">
+                    <p class="text">Integrations content will be displayed here.</p>
+                </div>
+
+                <!-- Interfaces Table (placeholder) -->
+                <div class="agents-table-container tab-content" id="interfaces-tab" style="display: none;">
+                    <p class="text">Interfaces content will be displayed here.</p>
+                </div>
+
+                <!-- Footer -->
+                <div class="table-footer">
+                    <span class="text">3 items</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Context Menu -->
+    <div id="contextMenu" class="context-menu">
+        <button class="context-menu-item" data-action="edit">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2"/>
+                <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89783 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>Edit</span>
+        </button>
+        <button class="context-menu-item" data-action="duplicate">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>Duplicate</span>
+        </button>
+        <button class="context-menu-item delete" data-action="delete">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 6H5H21" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>Delete</span>
+        </button>
+    </div>
+
+    <!-- Create Tool Modal -->
+    <div id="createToolModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Tool</h2>
+                <button class="modal-close" id="closeToolModalBtn">&times;</button>
+            </div>
+            <form id="createToolForm">
+                <div class="form-group form-row">
+                    <label for="toolName" class="form-label text">Tool name <span class="required text-error">*</span></label>
+                    <input type="text" id="toolName" class="form-input text" placeholder="Enter tool name" required>
+                </div>
+                <div class="form-group form-row">
+                    <label for="toolType" class="form-label text">Type <span class="required text-error">*</span></label>
+                    <div class="custom-select-wrapper">
+                        <button type="button" class="custom-select-trigger" id="toolTypeSelect">
+                            <span class="custom-select-value">Select</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="custom-select-dropdown" id="toolTypeDropdown">
+                            <div class="tool-type-option" data-type="text-knowledge-base" data-title="Text Knowledge Base">
+                                <div class="tool-type-title">Text Knowledge Base</div>
+                                <div class="tool-type-description">Text based reference data that agents can use to generate accurate and desired output.</div>
+                            </div>
+                            <div class="tool-type-option" data-type="database-knowledge-base" data-title="Database Knowledge Base">
+                                <div class="tool-type-title">Database Knowledge Base</div>
+                                <div class="tool-type-description">Create database based reference data.</div>
+                            </div>
+                            <div class="tool-type-option" data-type="image-generator" data-title="Image Generator">
+                                <div class="tool-type-title">Image Generator</div>
+                                <div class="tool-type-description">Simple drag and drop editor for building responsive emails without code.</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="toolType" name="toolType" required>
+                    </div>
+                </div>
+                <div class="form-group form-row">
+                    <label for="toolDescription" class="form-label text">Description</label>
+                    <textarea id="toolDescription" class="form-textarea text" placeholder="Enter tool description" rows="4"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelToolBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="project.js"></script>
+</body>
+</html>
