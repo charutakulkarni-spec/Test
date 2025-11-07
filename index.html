@@ -107,6 +107,18 @@
                     </svg>
                     <span class="subtext">Projects</span>
                 </a>
+
+                <div class="bookmarked-section" id="bookmarkedSection">
+                    <button class="bookmarked-header" id="bookmarkedToggle">
+                        <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="subtext">Bookmarked</span>
+                    </button>
+                    <div class="bookmarked-items" id="bookmarkedProjects">
+                        <!-- Bookmarked projects will be added here dynamically -->
+                    </div>
+                </div>
             </div>
         </aside>
 
@@ -147,7 +159,8 @@
                         </div>
                     </div>
                 </div>
-                <p class="empty-text text">No project created yet</p>
+                <h2 class="empty-title">Create your first project</h2>
+                <p class="empty-description subtext">A project is your dedicated environment to create, test, and deploy AI agents. Create powerful tools for your agents to use, and then deploy your agents across Interfaces and System Integrations.</p>
                 <button class="create-project-btn-main text-label">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -192,7 +205,10 @@
                 <form class="modal-body" id="createProjectForm">
                     <div class="form-group form-row">
                         <label for="projectName" class="form-label text-label">Name <span class="required text-error">*</span></label>
-                        <input type="text" id="projectName" class="form-input text" placeholder="Enter project name" required>
+                        <div style="flex: 1;">
+                            <input type="text" id="projectName" class="form-input text" placeholder="Enter project name" required>
+                            <div class="error-message" id="projectNameError"></div>
+                        </div>
                     </div>
 
                     <div class="form-group form-row">
@@ -230,6 +246,48 @@
         </div>
     </div>
 
+    <!-- Duplicate Project Modal -->
+    <div id="duplicateProjectModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Duplicate Project</h2>
+                <button class="modal-close" id="closeDuplicateModalBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            <form class="modal-body" id="duplicateProjectForm">
+                <div class="info-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <p class="text">Duplicating a project will copy all Agents, Tools, and Interfaces to the new project. Integrations will not be copied and should be defined separately in the new project.</p>
+                </div>
+
+                <div class="form-group form-row">
+                    <label for="duplicateProjectName" class="form-label text-label">Name <span class="required text-error">*</span></label>
+                    <div style="flex: 1;">
+                        <input type="text" id="duplicateProjectName" class="form-input text" placeholder="Enter project name" required>
+                        <div class="error-message" id="duplicateProjectNameError"></div>
+                    </div>
+                </div>
+
+                <div class="form-group form-row">
+                    <label for="duplicateProjectDescription" class="form-label text-label">Description</label>
+                    <textarea id="duplicateProjectDescription" class="form-textarea text" placeholder="Enter project description" rows="4"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary text-label" id="cancelDuplicateBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary text-label">Duplicate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Context Menu -->
     <div id="contextMenu" class="context-menu">
         <button class="context-menu-item" data-action="edit">
@@ -245,6 +303,12 @@
                 <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
             </svg>
             <span>Duplicate</span>
+        </button>
+        <button class="context-menu-item" data-action="bookmark">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 21L12 16L5 21V5C5 4.46957 5.21071 3.96086 5.58579 3.58579C5.96086 3.21071 6.46957 3 7 3H17C17.5304 3 18.0391 3.21071 18.4142 3.58579C18.7893 3.96086 19 4.46957 19 5V21Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span class="bookmark-text">Bookmark</span>
         </button>
         <button class="context-menu-item delete" data-action="delete">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

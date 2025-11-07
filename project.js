@@ -18,34 +18,47 @@ document.addEventListener('DOMContentLoaded', function() {
         const agents = JSON.parse(localStorage.getItem('agents') || '[]');
         const projectAgents = agents.filter(agent => agent.project === projectName);
 
-        const agentsTableBody = document.querySelector('#agents-tab .agents-table tbody');
-        if (agentsTableBody && projectAgents.length > 0) {
-            agentsTableBody.innerHTML = '';
+        const agentsTableBody = document.querySelector('#agentsTableContainer .agents-table tbody');
+        const agentsEmptyState = document.getElementById('agentsEmptyState');
+        const agentsTableContainer = document.getElementById('agentsTableContainer');
 
-            projectAgents.forEach(agent => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><a href="#" class="agent-name text-primary">${agent.name}</a></td>
-                    <td class="text">--</td>
-                    <td class="text">${agent.model}</td>
-                    <td><span class="tool-badge">Tool 1</span></td>
-                    <td class="text">${agent.updatedOn}</td>
-                    <td class="text">${agent.updatedBy}</td>
-                    <td>
-                        <button class="menu-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
-                                <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-                                <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
-                            </svg>
-                        </button>
-                    </td>
-                `;
-                agentsTableBody.appendChild(row);
-            });
+        if (projectAgents.length === 0) {
+            // Show empty state
+            agentsEmptyState.style.display = 'block';
+            agentsTableContainer.style.display = 'none';
+        } else {
+            // Show table with data
+            agentsEmptyState.style.display = 'none';
+            agentsTableContainer.style.display = 'block';
 
-            // Re-attach event listeners for new agent links
-            attachAgentLinkListeners();
+            if (agentsTableBody) {
+                agentsTableBody.innerHTML = '';
+
+                projectAgents.forEach(agent => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><a href="#" class="agent-name text-primary">${agent.name}</a></td>
+                        <td class="text">--</td>
+                        <td class="text">${agent.model}</td>
+                        <td><span class="tool-badge">Tool 1</span></td>
+                        <td class="text">${agent.updatedOn}</td>
+                        <td class="text">${agent.updatedBy}</td>
+                        <td>
+                            <button class="menu-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                                    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                                    <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+                                </svg>
+                            </button>
+                        </td>
+                    `;
+                    agentsTableBody.appendChild(row);
+                });
+
+                // Re-attach event listeners for new agent links
+                attachAgentLinkListeners();
+            }
         }
     }
 
@@ -54,33 +67,46 @@ document.addEventListener('DOMContentLoaded', function() {
         const tools = JSON.parse(localStorage.getItem('tools') || '[]');
         const projectTools = tools.filter(tool => tool.project === projectName);
 
-        const toolsTableBody = document.querySelector('#tools-tab .agents-table tbody');
-        if (toolsTableBody && projectTools.length > 0) {
-            toolsTableBody.innerHTML = '';
+        const toolsTableBody = document.querySelector('#toolsTableContainer .agents-table tbody');
+        const toolsEmptyState = document.getElementById('toolsEmptyState');
+        const toolsTableContainer = document.getElementById('toolsTableContainer');
 
-            projectTools.forEach(tool => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><a href="#" class="tool-name text-primary">${tool.name}</a></td>
-                    <td class="text">${tool.category || 'Self-managed'}</td>
-                    <td class="text">${tool.type}</td>
-                    <td class="text">${tool.updatedBy}</td>
-                    <td class="text">${tool.updatedOn}</td>
-                    <td>
-                        <button class="menu-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
-                                <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-                                <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
-                            </svg>
-                        </button>
-                    </td>
-                `;
-                toolsTableBody.appendChild(row);
-            });
+        if (projectTools.length === 0) {
+            // Show empty state
+            toolsEmptyState.style.display = 'block';
+            toolsTableContainer.style.display = 'none';
+        } else {
+            // Show table with data
+            toolsEmptyState.style.display = 'none';
+            toolsTableContainer.style.display = 'block';
 
-            // Re-attach event listeners for new tool links
-            attachToolLinkListeners();
+            if (toolsTableBody) {
+                toolsTableBody.innerHTML = '';
+
+                projectTools.forEach(tool => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><a href="#" class="tool-name text-primary">${tool.name}</a></td>
+                        <td class="text">${tool.category || 'Self-managed'}</td>
+                        <td class="text">${tool.type}</td>
+                        <td class="text">${tool.updatedBy}</td>
+                        <td class="text">${tool.updatedOn}</td>
+                        <td>
+                            <button class="menu-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                                    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                                    <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+                                </svg>
+                            </button>
+                        </td>
+                    `;
+                    toolsTableBody.appendChild(row);
+                });
+
+                // Re-attach event listeners for new tool links
+                attachToolLinkListeners();
+            }
         }
     }
 
@@ -262,49 +288,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Get the selected tool type title
-            const selectedOption = document.querySelector(`.tool-type-option[data-type="${toolType}"]`);
-            const toolTypeTitle = selectedOption ? selectedOption.dataset.title : toolType;
-
-            // Create tool object
-            const tool = {
+            // Store tool data temporarily in localStorage
+            const toolData = {
                 name: toolName,
-                type: toolTypeTitle,
+                type: toolType,
                 description: toolDescription,
-                category: 'Self-managed',
-                project: projectName,
-                updatedBy: 'Sam Gillis',
-                updatedOn: new Date().toLocaleString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    hour12: true
-                })
+                project: projectName
             };
+            localStorage.setItem('currentToolData', JSON.stringify(toolData));
 
-            // Get existing tools from localStorage
-            let tools = JSON.parse(localStorage.getItem('tools') || '[]');
-
-            // Add new tool
-            tools.push(tool);
-
-            // Save to localStorage
-            localStorage.setItem('tools', JSON.stringify(tools));
-
-            // Close modal and reset form
-            createToolModal.classList.remove('active');
-            createToolForm.reset();
-            toolTypeOptions.forEach(opt => opt.classList.remove('selected'));
-            toolTypeInput.value = '';
-            toolTypeValueDisplay.textContent = 'Select';
-            toolTypeValueDisplay.classList.remove('selected');
-
-            // Reload tools table
-            loadTools();
-
-            console.log('Tool created:', tool);
+            // Redirect to the appropriate tool page based on type
+            window.location.href = `tool-${toolType}.html?project=${encodeURIComponent(projectName)}`;
         });
     }
 
@@ -327,7 +321,28 @@ document.addEventListener('DOMContentLoaded', function() {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const toolName = this.textContent;
-                window.location.href = `tool.html?name=${encodeURIComponent(toolName)}&project=${encodeURIComponent(projectName)}`;
+
+                // Find the tool in localStorage to get its type
+                const tools = JSON.parse(localStorage.getItem('tools') || '[]');
+                const tool = tools.find(t => t.name === toolName && t.project === projectName);
+
+                if (tool) {
+                    // Store tool data for editing
+                    localStorage.setItem('currentToolData', JSON.stringify(tool));
+
+                    // Determine which page to redirect to based on tool type
+                    let toolPage = 'tool-text-knowledge-base.html'; // default
+
+                    if (tool.type === 'Text Knowledge Base') {
+                        toolPage = 'tool-text-knowledge-base.html';
+                    } else if (tool.type === 'Database Knowledge Base') {
+                        toolPage = 'tool-database-knowledge-base.html';
+                    } else if (tool.type === 'Image Generator') {
+                        toolPage = 'tool-image-generator.html';
+                    }
+
+                    window.location.href = `${toolPage}?name=${encodeURIComponent(toolName)}&project=${encodeURIComponent(projectName)}`;
+                }
             });
         });
     }
@@ -335,6 +350,47 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial attach for existing agents and tools
     attachAgentLinkListeners();
     attachToolLinkListeners();
+
+    // Close banner functionality
+    const closeElementsBanner = document.getElementById('closeElementsBanner');
+    const elementsSection = document.querySelector('.elements-section');
+
+    if (closeElementsBanner && elementsSection) {
+        closeElementsBanner.addEventListener('click', function() {
+            elementsSection.style.display = 'none';
+        });
+    }
+
+    // Empty state create buttons
+    const createAgentFromEmpty = document.getElementById('createAgentFromEmpty');
+    const createToolFromEmpty = document.getElementById('createToolFromEmpty');
+    const createIntegrationFromEmpty = document.getElementById('createIntegrationFromEmpty');
+    const createInterfaceFromEmpty = document.getElementById('createInterfaceFromEmpty');
+
+    if (createAgentFromEmpty) {
+        createAgentFromEmpty.addEventListener('click', function() {
+            window.location.href = `agent.html?project=${encodeURIComponent(projectName)}`;
+        });
+    }
+
+    if (createToolFromEmpty) {
+        createToolFromEmpty.addEventListener('click', function() {
+            const createToolModal = document.getElementById('createToolModal');
+            createToolModal.classList.add('active');
+        });
+    }
+
+    if (createIntegrationFromEmpty) {
+        createIntegrationFromEmpty.addEventListener('click', function() {
+            alert('Create integration functionality - to be implemented');
+        });
+    }
+
+    if (createInterfaceFromEmpty) {
+        createInterfaceFromEmpty.addEventListener('click', function() {
+            alert('Create interface functionality - to be implemented');
+        });
+    }
 
     // Context menu functionality
     const contextMenu = document.getElementById('contextMenu');

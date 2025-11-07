@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Knowledge Base - AI Agent Foundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="app tool-app">
+        <!-- Tool Header (spans full width) -->
+        <div class="tool-header">
+            <button class="back-btn" id="backBtn" title="Back to project">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <h1 id="toolTitle">Create Text Knowledge Base</h1>
+        </div>
+
+        <!-- Content Area with Sidebar and Main Content -->
+        <div class="tool-body">
+            <!-- Left Sidebar -->
+            <aside class="tool-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title text-primary">Details</div>
+                </div>
+            </aside>
+
+            <!-- Tool Main Content -->
+            <main class="tool-main-content">
+                <div class="tool-content">
+                    <form id="toolForm">
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label for="name" class="form-label text">Knowledge Base name <span class="required text-error">*</span></label>
+                                <input type="text" id="name" class="form-input text" placeholder="Brand Guidelines" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description" class="form-label text">Description</label>
+                                <textarea id="description" class="form-textarea text" placeholder="Enter description" rows="4"></textarea>
+                            </div>
+
+                            <div class="form-group form-group-fill">
+                                <label for="knowledgeBase" class="form-label text">Text input <span class="required text-error">*</span></label>
+                                <textarea id="knowledgeBase" class="form-textarea-large text" placeholder="" required></textarea>
+                                <div class="word-count text" id="wordCount">0/5000 words</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+
+        <!-- Tool Footer (spans full width) -->
+        <div class="tool-footer">
+            <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+            <button class="btn btn-primary" id="createBtn">Save</button>
+        </div>
+    </div>
+
+    <script src="tool-text-knowledge-base.js"></script>
+</body>
+</html>
