@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Knowledge Base - AI Agent Foundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/neo.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+</head>
+<body>
+    <div class="app tool-app">
+        <!-- Tool Header (spans full width) -->
+        <div class="tool-header">
+            <button class="back-btn" id="backBtn" title="Back to project">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <h1 id="toolTitle">Create Database Knowledge Base</h1>
+        </div>
+
+        <!-- Content Area with Sidebar and Main Content -->
+        <div class="tool-body">
+            <!-- Left Sidebar -->
+            <aside class="tool-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title text-primary">Details</div>
+                </div>
+            </aside>
+
+            <!-- Tool Main Content -->
+            <main class="tool-main-content" id="toolMainContent">
+                <div class="tool-content">
+                    <form id="toolForm">
+                        <div class="form-section">
+                            <div class="form-group form-group-horizontal">
+                                <label for="name" class="form-label text">Tool name <span class="required text-error">*</span></label>
+                                <input type="text" id="name" class="form-input text" placeholder="Enter tool name" required>
+                            </div>
+
+                            <div class="form-group form-group-horizontal">
+                                <label for="description" class="form-label text">Description</label>
+                                <textarea id="description" class="form-textarea text" placeholder="Enter description" rows="4"></textarea>
+                            </div>
+
+                            <div class="form-divider"></div>
+
+                            <div class="form-group form-group-horizontal">
+                                <label for="databaseName" class="form-label text">Select database <span class="required text-error">*</span></label>
+                                <div class="custom-select-wrapper">
+                                    <button type="button" class="custom-select-trigger" id="databaseNameSelect">
+                                        <span class="custom-select-value">Select database</span>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                    <div class="custom-select-dropdown" id="databaseNameDropdown">
+                                        <div class="select-option" data-value="database1">Database 1</div>
+                                        <div class="select-option" data-value="database2">Database 2</div>
+                                        <div class="select-option" data-value="database3">Database 3</div>
+                                    </div>
+                                    <input type="hidden" id="databaseName" name="databaseName" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group-horizontal form-group-fill">
+                                <label for="query" class="form-label text">Query</label>
+                                <div class="query-editor-wrapper">
+                                    <div class="query-editor-header">
+                                        <button type="button" class="schema-btn" id="viewSchemaBtn" title="View Schema">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                                                <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                                                <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                                                <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                                            </svg>
+                                            Schema
+                                        </button>
+                                    </div>
+                                    <textarea id="query" class="form-textarea-large text" style="font-family: 'Roboto Mono', monospace;">-- This is the most basic SQL query: it selects specific columns from a single table.
+
+SELECT ... -- Add the column by writing or clicking on the schema
+FROM ... -- Add the table by writing or clicking on the schema</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </main>
+
+            <!-- Schema Panel (Right Sidebar) -->
+            <aside class="schema-sidebar open" id="schemaSidebar">
+        <div class="schema-panel-header">
+            <div class="schema-panel-header-text">
+                <h3 class="schema-panel-title">Database Schema</h3>
+                <p class="schema-panel-subtitle subtext" id="schemaDatabaseName">No database selected</p>
+            </div>
+            <button type="button" class="schema-close-btn" id="closeSchemaBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="schema-panel-content">
+            <div class="schema-table">
+                <button type="button" class="schema-table-header" data-table="users">
+                    <svg class="schema-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="schema-table-name">users</span>
+                </button>
+                <div class="schema-table-columns">
+                    <div class="schema-column">id <span class="schema-type">INT</span></div>
+                    <div class="schema-column">name <span class="schema-type">VARCHAR(255)</span></div>
+                    <div class="schema-column">email <span class="schema-type">VARCHAR(255)</span></div>
+                    <div class="schema-column">created_at <span class="schema-type">TIMESTAMP</span></div>
+                </div>
+            </div>
+            <div class="schema-table">
+                <button type="button" class="schema-table-header" data-table="orders">
+                    <svg class="schema-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="schema-table-name">orders</span>
+                </button>
+                <div class="schema-table-columns">
+                    <div class="schema-column">id <span class="schema-type">INT</span></div>
+                    <div class="schema-column">user_id <span class="schema-type">INT</span></div>
+                    <div class="schema-column">total <span class="schema-type">DECIMAL(10,2)</span></div>
+                    <div class="schema-column">status <span class="schema-type">VARCHAR(50)</span></div>
+                    <div class="schema-column">created_at <span class="schema-type">TIMESTAMP</span></div>
+                </div>
+            </div>
+            <div class="schema-table">
+                <button type="button" class="schema-table-header" data-table="products">
+                    <svg class="schema-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="schema-table-name">products</span>
+                </button>
+                <div class="schema-table-columns">
+                    <div class="schema-column">id <span class="schema-type">INT</span></div>
+                    <div class="schema-column">name <span class="schema-type">VARCHAR(255)</span></div>
+                    <div class="schema-column">price <span class="schema-type">DECIMAL(10,2)</span></div>
+                    <div class="schema-column">stock <span class="schema-type">INT</span></div>
+                    <div class="schema-column">category <span class="schema-type">VARCHAR(100)</span></div>
+                </div>
+            </div>
+            <div class="schema-table">
+                <button type="button" class="schema-table-header" data-table="categories">
+                    <svg class="schema-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="schema-table-name">categories</span>
+                </button>
+                <div class="schema-table-columns">
+                    <div class="schema-column">id <span class="schema-type">INT</span></div>
+                    <div class="schema-column">name <span class="schema-type">VARCHAR(100)</span></div>
+                    <div class="schema-column">description <span class="schema-type">TEXT</span></div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Tool Footer (spans full width) -->
+        <div class="tool-footer">
+            <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+            <button class="btn btn-primary" id="createBtn">Save</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/sql/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/sql-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+    <script src="tool-database-knowledge-base.js"></script>
+</body>
+</html>
