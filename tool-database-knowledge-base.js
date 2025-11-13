@@ -10,14 +10,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Determine if we're editing an existing tool or creating a new one
     const isEditing = !!toolName;
 
-    // Update button text if editing
+    // Update button text and title if editing
     if (isEditing) {
         document.getElementById('createBtn').textContent = 'Save';
+        if (toolData.name) {
+            document.getElementById('toolTitle').textContent = `Edit ${toolData.name}`;
+        }
     }
 
     // Populate form with tool data
     if (toolData.name) {
-        document.getElementById('toolTitle').textContent = isEditing ? toolData.name : 'Create Database Knowledge Base';
         document.getElementById('name').value = toolData.name;
     }
 
@@ -29,6 +31,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('databaseName').value = toolData.databaseName;
         document.querySelector('#databaseNameSelect .custom-select-value').textContent = toolData.databaseName;
         document.querySelector('#databaseNameSelect .custom-select-value').classList.add('selected');
+
+        // Show query field and schema panel since database is already selected
+        document.getElementById('queryFieldContainer').style.display = 'grid';
+        document.getElementById('schemaSidebar').classList.add('open');
+        document.getElementById('schemaDatabaseName').textContent = toolData.databaseName;
     }
 
     // Initialize CodeMirror for SQL editor
@@ -59,6 +66,48 @@ document.addEventListener('DOMContentLoaded', function() {
     if (toolData.query) {
         sqlEditor.setValue(toolData.query);
     }
+
+    // Track unsaved changes
+    const unsavedChangesIndicator = document.getElementById('unsavedChanges');
+    const nameInput = document.getElementById('name');
+    const descriptionInput = document.getElementById('description');
+    const databaseNameInput = document.getElementById('databaseName');
+    let hasUnsavedChanges = false;
+
+    // Store initial values
+    const initialValues = {
+        name: nameInput.value,
+        description: descriptionInput.value,
+        databaseName: databaseNameInput.value,
+        query: sqlEditor.getValue()
+    };
+
+    function checkForChanges() {
+        const currentValues = {
+            name: nameInput.value,
+            description: descriptionInput.value,
+            databaseName: databaseNameInput.value,
+            query: sqlEditor.getValue()
+        };
+
+        hasUnsavedChanges =
+            currentValues.name !== initialValues.name ||
+            currentValues.description !== initialValues.description ||
+            currentValues.databaseName !== initialValues.databaseName ||
+            currentValues.query !== initialValues.query;
+
+        if (hasUnsavedChanges) {
+            unsavedChangesIndicator.style.display = 'block';
+        } else {
+            unsavedChangesIndicator.style.display = 'none';
+        }
+    }
+
+    // Add change listeners
+    nameInput.addEventListener('input', checkForChanges);
+    descriptionInput.addEventListener('input', checkForChanges);
+    databaseNameInput.addEventListener('change', checkForChanges);
+    sqlEditor.on('change', checkForChanges);
 
     // Enhanced auto-trigger autocomplete
     sqlEditor.on('inputRead', function(cm, change) {
@@ -118,7 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const databaseNameSelect = document.getElementById('databaseNameSelect');
     const databaseNameDropdown = document.getElementById('databaseNameDropdown');
     const databaseNameValue = document.querySelector('#databaseNameSelect .custom-select-value');
-    const databaseNameInput = document.getElementById('databaseName');
+    const queryFieldContainer = document.getElementById('queryFieldContainer');
+    const schemaSidebarEl = document.getElementById('schemaSidebar');
 
     databaseNameSelect.addEventListener('click', function(e) {
         e.preventDefault();
@@ -138,6 +188,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
             databaseNameDropdown.classList.remove('open');
             databaseNameSelect.classList.remove('open');
+
+            // Show query field and schema panel when database is selected
+            queryFieldContainer.style.display = 'grid';
+            schemaSidebarEl.classList.add('open');
+
+            // Refresh CodeMirror immediately to show default text
+            setTimeout(function() {
+                sqlEditor.refresh();
+            }, 0);
+
+            // Show loading state in schema panel
+            const schemaLoading = document.getElementById('schemaLoading');
+            const schemaTablesContainer = document.getElementById('schemaTablesContainer');
+            schemaLoading.style.display = 'flex';
+            schemaTablesContainer.style.display = 'none';
+
+            // Update schema panel database name
+            const schemaDatabaseNameEl = document.getElementById('schemaDatabaseName');
+            schemaDatabaseNameEl.textContent = displayText;
+
+            // Simulate loading delay for schema (in real app, this would be an API call)
+            setTimeout(function() {
+                schemaLoading.style.display = 'none';
+                schemaTablesContainer.style.display = 'block';
+            }, 800);
+
+            checkForChanges();
         });
     });
 
@@ -151,32 +228,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Schema Sidebar functionality
     const viewSchemaBtn = document.getElementById('viewSchemaBtn');
-    const schemaSidebar = document.getElementById('schemaSidebar');
     const closeSchemaBtn = document.getElementById('closeSchemaBtn');
-    const schemaDatabaseNameEl = document.getElementById('schemaDatabaseName');
 
     viewSchemaBtn.addEventListener('click', function(e) {
         e.preventDefault();
 
         // Update database name in schema panel
         const selectedDatabase = databaseNameValue.textContent;
+        const schemaDatabaseNameEl = document.getElementById('schemaDatabaseName');
         if (selectedDatabase && selectedDatabase !== 'Select database') {
             schemaDatabaseNameEl.textContent = selectedDatabase;
         } else {
             schemaDatabaseNameEl.textContent = 'No database selected';
         }
 
-        schemaSidebar.classList.toggle('open');
+        schemaSidebarEl.classList.toggle('open');
     });
 
     closeSchemaBtn.addEventListener('click', function() {
-        schemaSidebar.classList.remove('open');
+        schemaSidebarEl.classList.remove('open');
     });
 
     // Handle table collapse/expand
     const schemaTableHeaders = document.querySelectorAll('.schema-table-header');
+    console.log('Schema table headers found:', schemaTableHeaders.length);
     schemaTableHeaders.forEach(header => {
-        header.addEventListener('click', function() {
+        header.addEventListener('click', function(e) {
+            console.log('Table header clicked:', this);
             const schemaTable = this.closest('.schema-table');
             schemaTable.classList.toggle('expanded');
         });
@@ -186,6 +264,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupDragAndDrop() {
         const schemaColumns = document.querySelectorAll('.schema-column');
         const schemaTableNames = document.querySelectorAll('.schema-table-name');
+
+        console.log('Schema columns found:', schemaColumns.length);
+        console.log('Schema table names found:', schemaTableNames.length);
 
         // Make columns draggable
         schemaColumns.forEach(column => {

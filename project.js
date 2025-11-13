@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 projectTools.forEach(tool => {
                     const row = document.createElement('tr');
+                    row.setAttribute('data-tool-name', tool.name);
                     row.innerHTML = `
                         <td><a href="#" class="tool-name text-primary">${tool.name}</a></td>
                         <td class="text">${tool.category || 'Self-managed'}</td>
@@ -106,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Re-attach event listeners for new tool links
                 attachToolLinkListeners();
+                attachToolContextMenuListeners();
             }
         }
     }
@@ -275,16 +277,50 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle form submission
     if (createToolForm) {
+        const toolNameInput = document.getElementById('toolName');
+        const toolNameError = document.getElementById('toolNameError');
+
+        // Clear error on input
+        toolNameInput.addEventListener('input', function() {
+            toolNameInput.classList.remove('error');
+            toolNameError.classList.remove('show');
+            toolNameError.textContent = '';
+        });
+
         createToolForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const toolName = document.getElementById('toolName').value;
+            const toolName = toolNameInput.value.trim();
             const toolType = toolTypeInput.value;
             const toolDescription = document.getElementById('toolDescription').value;
 
-            // Validate required fields
-            if (!toolName || !toolType) {
-                alert('Please fill in all required fields (Tool name and Type)');
+            // Clear previous errors
+            toolNameInput.classList.remove('error');
+            toolNameError.classList.remove('show');
+            toolNameError.textContent = '';
+
+            // Validate tool name
+            if (!toolName) {
+                toolNameInput.classList.add('error');
+                toolNameError.textContent = 'Name is required.';
+                toolNameError.classList.add('show');
+                return;
+            }
+
+            // Check for duplicate tool name
+            const tools = JSON.parse(localStorage.getItem('tools') || '[]');
+            const duplicateTool = tools.find(t => t.name.toLowerCase() === toolName.toLowerCase() && t.project === projectName);
+
+            if (duplicateTool) {
+                toolNameInput.classList.add('error');
+                toolNameError.textContent = 'A tool with this name already exists.';
+                toolNameError.classList.add('show');
+                return;
+            }
+
+            // Validate type
+            if (!toolType) {
+                alert('Please select a tool type');
                 return;
             }
 
@@ -337,6 +373,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         toolPage = 'tool-text-knowledge-base.html';
                     } else if (tool.type === 'Database Knowledge Base') {
                         toolPage = 'tool-database-knowledge-base.html';
+                    } else if (tool.type === 'Multi-media Knowledge Base') {
+                        toolPage = 'tool-multimedia-knowledge-base.html';
                     } else if (tool.type === 'Image Generator') {
                         toolPage = 'tool-image-generator.html';
                     }
@@ -347,9 +385,89 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Tool context menu functionality
+    function attachToolContextMenuListeners() {
+        const toolRows = document.querySelectorAll('#toolsTableContainer tbody tr');
+        const toolContextMenu = document.getElementById('toolContextMenu');
+
+        console.log('Tool rows found:', toolRows.length);
+        console.log('Tool context menu element:', toolContextMenu);
+
+        if (!toolContextMenu) {
+            console.error('Tool context menu not found');
+            return;
+        }
+
+        toolRows.forEach(row => {
+            row.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const toolName = this.getAttribute('data-tool-name');
+
+                console.log('Right-clicked tool:', toolName);
+
+                // Position and show context menu
+                toolContextMenu.style.left = `${e.pageX}px`;
+                toolContextMenu.style.top = `${e.pageY}px`;
+                toolContextMenu.classList.add('active');
+                toolContextMenu.setAttribute('data-context-tool-name', toolName);
+            });
+        });
+
+        // Handle context menu actions
+        const contextMenuItems = toolContextMenu.querySelectorAll('.context-menu-item');
+        contextMenuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                const toolName = toolContextMenu.getAttribute('data-context-tool-name');
+
+                if (action === 'edit') {
+                    // Find the tool and edit it
+                    const tools = JSON.parse(localStorage.getItem('tools') || '[]');
+                    const tool = tools.find(t => t.name === toolName && t.project === projectName);
+
+                    if (tool) {
+                        localStorage.setItem('currentToolData', JSON.stringify(tool));
+
+                        let toolPage = 'tool-text-knowledge-base.html';
+                        if (tool.type === 'Text Knowledge Base') {
+                            toolPage = 'tool-text-knowledge-base.html';
+                        } else if (tool.type === 'Database Knowledge Base') {
+                            toolPage = 'tool-database-knowledge-base.html';
+                        } else if (tool.type === 'Multi-media Knowledge Base') {
+                            toolPage = 'tool-multimedia-knowledge-base.html';
+                        } else if (tool.type === 'Image Generator') {
+                            toolPage = 'tool-image-generator.html';
+                        }
+
+                        window.location.href = `${toolPage}?name=${encodeURIComponent(toolName)}&project=${encodeURIComponent(projectName)}`;
+                    }
+                } else if (action === 'delete') {
+                    // Delete the tool
+                    if (confirm(`Are you sure you want to delete "${toolName}"?`)) {
+                        let tools = JSON.parse(localStorage.getItem('tools') || '[]');
+                        tools = tools.filter(t => !(t.name === toolName && t.project === projectName));
+                        localStorage.setItem('tools', JSON.stringify(tools));
+                        loadTools(); // Reload the tools table
+                    }
+                }
+
+                toolContextMenu.classList.remove('active');
+            });
+        });
+
+        // Close context menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!toolContextMenu.contains(e.target)) {
+                toolContextMenu.classList.remove('active');
+            }
+        });
+    }
+
     // Initial attach for existing agents and tools
     attachAgentLinkListeners();
     attachToolLinkListeners();
+    attachToolContextMenuListeners();
 
     // Close banner functionality
     const closeElementsBanner = document.getElementById('closeElementsBanner');

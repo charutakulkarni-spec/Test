@@ -464,7 +464,7 @@ body {
     width: 90%;
     max-width: 600px;
     max-height: 90vh;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
 }
@@ -507,10 +507,18 @@ body {
 .modal-body {
     padding: var(--spacing-6);
     overflow-y: auto;
+    overflow-x: visible;
 }
 
 .modal-content form {
     padding: var(--spacing-6);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-3);
+    margin-top: var(--spacing-6);
 }
 
 .form-group {
@@ -519,6 +527,29 @@ body {
 
 .form-group:last-child {
     margin-bottom: 0;
+}
+
+.error-message {
+    display: none;
+    color: var(--color-error);
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-subtext);
+    margin-top: var(--spacing-1);
+}
+
+.error-message.show {
+    display: block;
+}
+
+.form-input.error,
+.form-textarea.error {
+    border-color: var(--color-error);
+}
+
+.form-input.error:focus,
+.form-textarea.error:focus {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 .form-row {
@@ -865,9 +896,27 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-height: 250px;
-    overflow-y: auto;
+    overflow-y: scroll;
     z-index: 1001;
     display: none;
+}
+
+.custom-select-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-select-dropdown::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 4px;
+}
+
+.custom-select-dropdown::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+.custom-select-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
 }
 
 .custom-select-dropdown.open {
@@ -875,14 +924,9 @@ body {
 }
 
 .tool-type-option {
-    padding: var(--spacing-4);
+    padding: 8px var(--spacing-4);
     cursor: pointer;
     transition: all 0.2s;
-    border-bottom: 1px solid #f3f4f6;
-}
-
-.tool-type-option:last-child {
-    border-bottom: none;
 }
 
 .tool-type-option:hover {
@@ -895,15 +939,15 @@ body {
 
 .tool-type-title {
     font-family: var(--font-family-primary);
-    font-size: var(--font-size-text);
-    font-weight: var(--font-weight-semibold);
+    font-size: 14px;
+    font-weight: 600;
     color: var(--color-neutral-black);
     margin-bottom: var(--spacing-1);
 }
 
 .tool-type-description {
     font-family: var(--font-family-primary);
-    font-size: var(--font-size-subtext);
+    font-size: 12px;
     color: #6b7280;
     line-height: 1.5;
 }

@@ -37,20 +37,22 @@
                 <div class="tool-content">
                     <form id="toolForm">
                         <div class="form-section">
-                            <div class="form-group">
+                            <div class="form-group form-group-horizontal">
                                 <label for="name" class="form-label text">Knowledge Base name <span class="required text-error">*</span></label>
                                 <input type="text" id="name" class="form-input text" placeholder="Brand Guidelines" required>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group form-group-horizontal">
                                 <label for="description" class="form-label text">Description</label>
                                 <textarea id="description" class="form-textarea text" placeholder="Enter description" rows="4"></textarea>
                             </div>
 
-                            <div class="form-group form-group-fill">
+                            <div class="form-group form-group-horizontal form-group-fill">
                                 <label for="knowledgeBase" class="form-label text">Text input <span class="required text-error">*</span></label>
-                                <textarea id="knowledgeBase" class="form-textarea-large text" placeholder="" required></textarea>
-                                <div class="word-count text" id="wordCount">0/5000 words</div>
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <textarea id="knowledgeBase" class="form-textarea-large text" placeholder="" required></textarea>
+                                    <div class="word-count text" id="wordCount">0/5000 words</div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -60,8 +62,11 @@
 
         <!-- Tool Footer (spans full width) -->
         <div class="tool-footer">
+            <div class="unsaved-changes text" id="unsavedChanges" style="display: none;">
+                There are unsaved changes
+            </div>
             <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
-            <button class="btn btn-primary" id="createBtn">Save</button>
+            <button class="btn btn-primary" id="createBtn">Create</button>
         </div>
     </div>
 

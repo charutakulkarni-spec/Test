@@ -10,14 +10,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Determine if we're editing an existing tool or creating a new one
     const isEditing = !!toolName;
 
-    // Update button text if editing
+    // Update button text and title if editing
     if (isEditing) {
         document.getElementById('createBtn').textContent = 'Save';
+        if (toolData.name) {
+            document.getElementById('toolTitle').textContent = `Edit ${toolData.name}`;
+        }
     }
 
     // Populate form with tool data
     if (toolData.name) {
-        document.getElementById('toolTitle').textContent = isEditing ? toolData.name : 'Create Text Knowledge Base';
         document.getElementById('name').value = toolData.name;
     }
 
@@ -41,6 +43,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
     knowledgeBaseTextarea.addEventListener('input', updateWordCount);
     updateWordCount(); // Initial count
+
+    // Track unsaved changes
+    const unsavedChangesIndicator = document.getElementById('unsavedChanges');
+    const nameInput = document.getElementById('name');
+    const descriptionInput = document.getElementById('description');
+    let hasUnsavedChanges = false;
+
+    // Store initial values
+    const initialValues = {
+        name: nameInput.value,
+        description: descriptionInput.value,
+        knowledgeBase: knowledgeBaseTextarea.value
+    };
+
+    function checkForChanges() {
+        const currentValues = {
+            name: nameInput.value,
+            description: descriptionInput.value,
+            knowledgeBase: knowledgeBaseTextarea.value
+        };
+
+        hasUnsavedChanges =
+            currentValues.name !== initialValues.name ||
+            currentValues.description !== initialValues.description ||
+            currentValues.knowledgeBase !== initialValues.knowledgeBase;
+
+        if (hasUnsavedChanges) {
+            unsavedChangesIndicator.style.display = 'block';
+        } else {
+            unsavedChangesIndicator.style.display = 'none';
+        }
+    }
+
+    // Add change listeners
+    nameInput.addEventListener('input', checkForChanges);
+    descriptionInput.addEventListener('input', checkForChanges);
+    knowledgeBaseTextarea.addEventListener('input', checkForChanges);
 
     // Back button functionality
     const backBtn = document.getElementById('backBtn');

@@ -70,7 +70,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group form-group-horizontal form-group-fill">
+                            <div class="form-group form-group-horizontal form-group-fill" id="queryFieldContainer" style="display: none;">
                                 <label for="query" class="form-label text">Query</label>
                                 <div class="query-editor-wrapper">
                                     <div class="query-editor-header">
@@ -96,7 +96,7 @@ FROM ... -- Add the table by writing or clicking on the schema</textarea>
             </main>
 
             <!-- Schema Panel (Right Sidebar) -->
-            <aside class="schema-sidebar open" id="schemaSidebar">
+            <aside class="schema-sidebar" id="schemaSidebar">
         <div class="schema-panel-header">
             <div class="schema-panel-header-text">
                 <h3 class="schema-panel-title">Database Schema</h3>
@@ -109,6 +109,11 @@ FROM ... -- Add the table by writing or clicking on the schema</textarea>
             </button>
         </div>
         <div class="schema-panel-content">
+            <div class="schema-loading" id="schemaLoading" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Loading schema...</p>
+            </div>
+            <div id="schemaTablesContainer">
             <div class="schema-table">
                 <button type="button" class="schema-table-header" data-table="users">
                     <svg class="schema-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -165,13 +170,19 @@ FROM ... -- Add the table by writing or clicking on the schema</textarea>
                     <div class="schema-column">name <span class="schema-type">VARCHAR(100)</span></div>
                     <div class="schema-column">description <span class="schema-type">TEXT</span></div>
                 </div>
+            </div>
+            </div>
+        </div>
             </aside>
         </div>
 
         <!-- Tool Footer (spans full width) -->
         <div class="tool-footer">
+            <div class="unsaved-changes text" id="unsavedChanges" style="display: none;">
+                There are unsaved changes
+            </div>
             <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
-            <button class="btn btn-primary" id="createBtn">Save</button>
+            <button class="btn btn-primary" id="createBtn">Create</button>
         </div>
     </div>
 

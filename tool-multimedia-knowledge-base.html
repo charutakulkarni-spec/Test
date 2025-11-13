@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-media Knowledge Base - AI Agent Foundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="tool.css">
+</head>
+<body>
+    <div class="app tool-app">
+        <!-- Tool Header (spans full width) -->
+        <div class="tool-header">
+            <button class="back-btn" id="backBtn" title="Back to project">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <h1 id="toolTitle">Create Multi-media Knowledge Base</h1>
+        </div>
+
+        <!-- Content Area with Sidebar and Main Content -->
+        <div class="tool-body">
+            <!-- Left Sidebar -->
+            <aside class="tool-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title text-primary">Details</div>
+                </div>
+            </aside>
+
+            <!-- Tool Main Content -->
+            <main class="tool-main-content">
+                <div class="tool-content">
+                    <form id="toolForm">
+                        <div class="form-section">
+                            <div class="form-group form-group-horizontal">
+                                <label for="name" class="form-label text">Knowledge Base name <span class="required text-error">*</span></label>
+                                <input type="text" id="name" class="form-input text" placeholder="Brand Guidelines" required>
+                            </div>
+
+                            <div class="form-group form-group-horizontal">
+                                <label for="description" class="form-label text">Description</label>
+                                <textarea id="description" class="form-textarea text" placeholder="Enter description" rows="4"></textarea>
+                            </div>
+
+                            <div class="form-group form-group-horizontal form-group-fill">
+                                <label class="form-label text">Content <span class="required text-error">*</span></label>
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="input-options">
+                                        <button type="button" class="input-option-btn active" id="pdfInputBtn">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            PDF
+                                        </button>
+                                        <button type="button" class="input-option-btn" id="linkInputBtn">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M10 13C10.4295 13.5741 10.9774 14.0491 11.6066 14.3929C12.2357 14.7367 12.9315 14.9411 13.6467 14.9923C14.3618 15.0435 15.0796 14.9403 15.7513 14.6897C16.4231 14.4392 17.0331 14.047 17.54 13.54L20.54 10.54C21.4508 9.59695 21.9548 8.33394 21.9434 7.02296C21.932 5.71198 21.4061 4.45791 20.4791 3.53087C19.5521 2.60383 18.298 2.07799 16.987 2.0666C15.676 2.0552 14.413 2.55918 13.47 3.46997L11.75 5.17997" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M14 11C13.5705 10.4259 13.0226 9.95083 12.3934 9.60707C11.7642 9.26331 11.0684 9.05889 10.3533 9.00768C9.63816 8.95646 8.92037 9.05965 8.24861 9.31023C7.57685 9.5608 6.96684 9.95303 6.45996 10.46L3.45996 13.46C2.54917 14.403 2.04519 15.666 2.05659 16.977C2.06798 18.288 2.59382 19.5421 3.52086 20.4691C4.44791 21.3961 5.70197 21.922 7.01296 21.9334C8.32394 21.9448 9.58694 21.4408 10.53 20.53L12.24 18.82" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            Link
+                                        </button>
+                                    </div>
+
+                                    <div id="pdfInputContainer" class="input-container">
+                                        <div class="file-upload-area" id="pdfUploadArea">
+                                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/>
+                                                <path d="M14 2V8H20" stroke="currentColor" stroke-width="2"/>
+                                            </svg>
+                                            <p class="upload-text">Drag and drop PDF here or <span class="upload-link">browse</span></p>
+                                            <input type="file" id="pdfFileInput" accept=".pdf" style="display: none;">
+                                        </div>
+                                        <div id="pdfFileList" class="file-list"></div>
+                                    </div>
+
+                                    <div id="linkInputContainer" class="input-container" style="display: none;">
+                                        <div class="link-input-area">
+                                            <input type="url" id="linkInput" class="form-input text" placeholder="https://example.com">
+                                            <button type="button" class="btn btn-secondary" id="addLinkBtn">Add</button>
+                                        </div>
+                                        <div id="linkList" class="link-list"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+
+        <!-- Tool Footer (spans full width) -->
+        <div class="tool-footer">
+            <div class="unsaved-changes text" id="unsavedChanges" style="display: none;">
+                There are unsaved changes
+            </div>
+            <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+            <button class="btn btn-primary" id="createBtn">Create</button>
+        </div>
+    </div>
+
+    <script src="tool-multimedia-knowledge-base.js"></script>
+</body>
+</html>
