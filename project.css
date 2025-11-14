@@ -376,14 +376,16 @@
 }
 
 .agent-name,
-.tool-name {
+.tool-name,
+.interface-name {
     font-weight: var(--font-weight-semibold);
     color: var(--color-primary);
     text-decoration: none;
 }
 
 .agent-name:hover,
-.tool-name:hover {
+.tool-name:hover,
+.interface-name:hover {
     text-decoration: underline;
 }
 

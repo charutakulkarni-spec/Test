@@ -154,15 +154,73 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Log form data (in production, this would be sent to a server)
-        console.log('Creating form interface:', formData);
+        // Get project name from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectName = urlParams.get('project') || 'Project 1';
+
+        // Get or create interface entry in localStorage
+        let interfaces = JSON.parse(localStorage.getItem('interfaces') || '[]');
+
+        // Check if this interface already exists (from modal creation)
+        let interfaceIndex = interfaces.findIndex(i =>
+            i.name === formData.interfaceName && i.project === projectName
+        );
+
+        // Collect form fields data
+        const formFields = [];
+        const fieldItems = formFieldsContainer.querySelectorAll('.form-field-item, .form-section-item');
+        fieldItems.forEach(item => {
+            const fieldId = item.dataset.fieldId;
+            const fieldType = item.dataset.fieldType;
+            const config = fieldConfigCache[fieldId] || {};
+
+            formFields.push({
+                id: fieldId,
+                type: fieldType,
+                label: config.label || getFieldLabel(fieldType),
+                placeholder: config.placeholder || '',
+                help: config.help || '',
+                required: config.required || false
+            });
+        });
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) + ' ' +
+                             currentDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+        const interfaceData = {
+            name: formData.interfaceName,
+            type: 'Form',
+            description: '',
+            project: projectName,
+            updatedBy: 'Admin',
+            updatedOn: formattedDate,
+            agent: formData.selectedAgent,
+            promptTemplate: formData.promptTemplate,
+            formFields: formFields
+        };
+
+        if (interfaceIndex >= 0) {
+            // Update existing interface
+            interfaces[interfaceIndex] = interfaceData;
+        } else {
+            // Add new interface
+            interfaces.push(interfaceData);
+        }
+
+        // Save to localStorage
+        localStorage.setItem('interfaces', JSON.stringify(interfaces));
+
+        // Log form data
+        console.log('Creating form interface:', interfaceData);
 
         // Show success message
         showNotification('Form interface created successfully!', 'success');
 
         // Redirect to project page after a short delay
         setTimeout(() => {
-            window.location.href = 'project.html';
+            const projectParam = projectName ? `?name=${encodeURIComponent(projectName)}` : '';
+            window.location.href = `project.html${projectParam}`;
         }, 1500);
     });
 

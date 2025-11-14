@@ -112,9 +112,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Load agents and tools on page load
+    // Load and display interfaces from localStorage
+    function loadInterfaces() {
+        const interfaces = JSON.parse(localStorage.getItem('interfaces') || '[]');
+        const projectInterfaces = interfaces.filter(iface => iface.project === projectName);
+
+        const interfacesTableBody = document.querySelector('#interfacesTableContainer .agents-table tbody');
+        const interfacesEmptyState = document.getElementById('interfacesEmptyState');
+        const interfacesTableContainer = document.getElementById('interfacesTableContainer');
+
+        if (projectInterfaces.length === 0) {
+            // Show empty state
+            interfacesEmptyState.style.display = 'block';
+            interfacesTableContainer.style.display = 'none';
+        } else {
+            // Show table with data
+            interfacesEmptyState.style.display = 'none';
+            interfacesTableContainer.style.display = 'block';
+
+            if (interfacesTableBody) {
+                interfacesTableBody.innerHTML = '';
+
+                projectInterfaces.forEach(iface => {
+                    const row = document.createElement('tr');
+                    row.setAttribute('data-interface-name', iface.name);
+                    row.innerHTML = `
+                        <td><a href="#" class="interface-name text-primary">${iface.name}</a></td>
+                        <td class="text">${iface.type}</td>
+                        <td class="text">${iface.updatedBy}</td>
+                        <td class="text">${iface.updatedOn}</td>
+                        <td>
+                            <button class="menu-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                                    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                                    <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+                                </svg>
+                            </button>
+                        </td>
+                    `;
+                    interfacesTableBody.appendChild(row);
+                });
+
+                // Re-attach event listeners for new interface links
+                attachInterfaceLinkListeners();
+                attachInterfaceContextMenuListeners();
+            }
+        }
+    }
+
+    // Load agents, tools and interfaces on page load
     loadAgents();
     loadTools();
+    loadInterfaces();
 
     // Tab switching functionality
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -178,7 +228,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     alert('Create integration functionality - to be implemented');
                     break;
                 case 'interfaces':
-                    alert('Create interface functionality - to be implemented');
+                    const createInterfaceModal = document.getElementById('createInterfaceModal');
+                    createInterfaceModal.classList.add('active');
                     break;
             }
         });
@@ -464,10 +515,121 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initial attach for existing agents and tools
+    // Interface name links functionality
+    function attachInterfaceLinkListeners() {
+        const interfaceLinks = document.querySelectorAll('.interface-name');
+        interfaceLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const interfaceName = this.textContent;
+
+                // Find the interface in localStorage to get its type
+                const interfaces = JSON.parse(localStorage.getItem('interfaces') || '[]');
+                const iface = interfaces.find(i => i.name === interfaceName && i.project === projectName);
+
+                if (iface) {
+                    // Store interface data for editing
+                    localStorage.setItem('currentInterfaceData', JSON.stringify(iface));
+
+                    // Determine which page to redirect to based on interface type
+                    let interfacePage = 'interface-form.html'; // default
+                    let interfaceType = 'form'; // default
+
+                    if (iface.type === 'Form') {
+                        interfacePage = 'interface-form.html';
+                        interfaceType = 'form';
+                    } else if (iface.type === 'Chat') {
+                        interfacePage = 'interface-chat.html';
+                        interfaceType = 'chat';
+                    } else if (iface.type === 'Chat + Form') {
+                        interfacePage = 'interface-chat-form.html';
+                        interfaceType = 'chat-form';
+                    }
+
+                    window.location.href = `${interfacePage}?name=${encodeURIComponent(interfaceName)}&project=${encodeURIComponent(projectName)}`;
+                }
+            });
+        });
+    }
+
+    // Interface context menu functionality
+    function attachInterfaceContextMenuListeners() {
+        const interfaceRows = document.querySelectorAll('#interfacesTableContainer tbody tr');
+        const interfaceContextMenu = document.getElementById('interfaceContextMenu');
+
+        if (!interfaceContextMenu) {
+            console.error('Interface context menu not found');
+            return;
+        }
+
+        interfaceRows.forEach(row => {
+            row.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const interfaceName = this.getAttribute('data-interface-name');
+
+                // Position and show context menu
+                interfaceContextMenu.style.left = `${e.pageX}px`;
+                interfaceContextMenu.style.top = `${e.pageY}px`;
+                interfaceContextMenu.classList.add('active');
+                interfaceContextMenu.setAttribute('data-context-interface-name', interfaceName);
+            });
+        });
+
+        // Handle context menu actions
+        const contextMenuItems = interfaceContextMenu.querySelectorAll('.context-menu-item');
+        contextMenuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                const interfaceName = interfaceContextMenu.getAttribute('data-context-interface-name');
+
+                if (action === 'edit') {
+                    // Find the interface and edit it
+                    const interfaces = JSON.parse(localStorage.getItem('interfaces') || '[]');
+                    const iface = interfaces.find(i => i.name === interfaceName && i.project === projectName);
+
+                    if (iface) {
+                        localStorage.setItem('currentInterfaceData', JSON.stringify(iface));
+
+                        let interfacePage = 'interface-form.html';
+                        if (iface.type === 'Form') {
+                            interfacePage = 'interface-form.html';
+                        } else if (iface.type === 'Chat') {
+                            interfacePage = 'interface-chat.html';
+                        } else if (iface.type === 'Chat + Form') {
+                            interfacePage = 'interface-chat-form.html';
+                        }
+
+                        window.location.href = `${interfacePage}?name=${encodeURIComponent(interfaceName)}&project=${encodeURIComponent(projectName)}`;
+                    }
+                } else if (action === 'delete') {
+                    // Delete the interface
+                    if (confirm(`Are you sure you want to delete "${interfaceName}"?`)) {
+                        let interfaces = JSON.parse(localStorage.getItem('interfaces') || '[]');
+                        interfaces = interfaces.filter(i => !(i.name === interfaceName && i.project === projectName));
+                        localStorage.setItem('interfaces', JSON.stringify(interfaces));
+                        loadInterfaces(); // Reload the interfaces table
+                    }
+                }
+
+                interfaceContextMenu.classList.remove('active');
+            });
+        });
+
+        // Close context menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!interfaceContextMenu.contains(e.target)) {
+                interfaceContextMenu.classList.remove('active');
+            }
+        });
+    }
+
+    // Initial attach for existing agents, tools and interfaces
     attachAgentLinkListeners();
     attachToolLinkListeners();
     attachToolContextMenuListeners();
+    attachInterfaceLinkListeners();
+    attachInterfaceContextMenuListeners();
 
     // Close banner functionality
     const closeElementsBanner = document.getElementById('closeElementsBanner');
@@ -615,13 +777,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Store interface data temporarily in localStorage
+            // Get type title for display
+            const typeOptionElement = document.querySelector(`#interfaceTypeDropdown .tool-type-option[data-type="${interfaceType}"]`);
+            const typeTitle = typeOptionElement ? typeOptionElement.getAttribute('data-title') : interfaceType;
+
+            // Create interface data with timestamp
+            const currentDate = new Date();
+            const formattedDate = currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) + ' ' +
+                                 currentDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
             const interfaceData = {
                 name: interfaceName,
-                type: interfaceType,
+                type: typeTitle,
                 description: interfaceDescription,
-                project: projectName
+                project: projectName,
+                updatedBy: 'Admin',
+                updatedOn: formattedDate
             };
+
+            // Save interface to localStorage
+            interfaces.push(interfaceData);
+            localStorage.setItem('interfaces', JSON.stringify(interfaces));
+
+            // Store interface data temporarily for editing
             localStorage.setItem('currentInterfaceData', JSON.stringify(interfaceData));
 
             // Redirect to the appropriate interface page based on type
