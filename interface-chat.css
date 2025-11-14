@@ -1,0 +1,664 @@
+/* Chat Interface Page Styles - Based on Figma Design */
+
+/* Main Layout */
+.interface-app {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #DDE6FA;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+html {
+    height: 100%;
+}
+
+.interface-app .primary-nav {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.interface-main-wrapper {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    background: #FFFFFF;
+    overflow: hidden;
+    height: 100%;
+    min-height: 100vh;
+}
+
+/* Header */
+.interface-header {
+    height: 72px;
+    min-height: 72px;
+    padding: 16px 24px;
+    background: #FFFFFF;
+    border-bottom: 1px solid #DCE1EA;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.back-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid #DCE1EA;
+    border-radius: 4px;
+    color: #212327;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background: #f9fafb;
+    border-color: #6F2EFF;
+}
+
+.interface-header h1 {
+    font-family: 'Figtree', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0;
+}
+
+/* Content Wrapper */
+.interface-content-wrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0; /* Important for flex children to respect overflow */
+}
+
+/* Stepper Sidebar */
+.stepper-sidebar {
+    width: 230px;
+    background: #FFFFFF;
+    border-right: 1px solid #DCE1EA;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.stepper-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 12px 8px 0;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    text-align: left;
+}
+
+.stepper-item:hover {
+    background: #f9fafb;
+}
+
+.stepper-item.active {
+    background: #F3EEFF;
+}
+
+.stepper-indicator {
+    position: absolute;
+    left: 0;
+    width: 4px;
+    height: 24px;
+    background: #6F2EFF;
+    border-radius: 0 4px 4px 0;
+    display: none;
+}
+
+.stepper-item.active .stepper-indicator {
+    display: block;
+}
+
+.stepper-number {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E8ECF3;
+    border-radius: 50%;
+    font-family: 'Figtree', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #636A77;
+    flex-shrink: 0;
+}
+
+.stepper-item.active .stepper-number {
+    background: #6F2EFF;
+    color: #FFFFFF;
+}
+
+.stepper-label {
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212327;
+    white-space: nowrap;
+}
+
+.stepper-item.active .stepper-label {
+    font-weight: 600;
+    color: #6F2EFF;
+}
+
+/* Form Content */
+.form-content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    background: #FFFFFF;
+}
+
+.step-panel {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.step-panel.active {
+    display: flex;
+}
+
+/* Form Rows */
+.form-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.form-row:has(#textInputEnabled) {
+    padding-bottom: 16px;
+    align-items: center;
+}
+
+.form-field-label {
+    width: 177px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212327;
+    flex-shrink: 0;
+}
+
+.form-field-label .required {
+    color: #BE1B29;
+    font-weight: 600;
+    margin-left: 2px;
+}
+
+.form-field-input {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Text Input */
+.text-input {
+    width: 100%;
+    height: 40px;
+    padding: 12px;
+    background: #FFFFFF;
+    border: 1px solid #E6E6E6;
+    border-radius: 4px;
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212327;
+    transition: all 0.2s;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: #6F2EFF;
+    box-shadow: 0 0 0 3px rgba(111, 46, 255, 0.1);
+}
+
+.text-input::placeholder {
+    color: #9ca3af;
+}
+
+/* Text Area */
+.text-area {
+    width: 100%;
+    min-height: 200px;
+    padding: 12px;
+    background: #FFFFFF;
+    border: 1px solid #E6E6E6;
+    border-radius: 4px;
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212327;
+    line-height: 1.5;
+    resize: vertical;
+    transition: all 0.2s;
+}
+
+.text-area:focus {
+    outline: none;
+    border-color: #6F2EFF;
+    box-shadow: 0 0 0 3px rgba(111, 46, 255, 0.1);
+}
+
+/* Help Text */
+.help-text {
+    margin-top: 8px;
+    padding: 0 12px;
+    font-family: 'Figtree', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #636A77;
+    line-height: 1.5;
+}
+
+/* Footer */
+.interface-footer {
+    height: 72px;
+    min-height: 72px;
+    padding: 16px 24px;
+    background: #FFFFFF;
+    border-top: 1px solid #E6E6E6;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Buttons */
+.btn-text {
+    height: 40px;
+    padding: 0 16px;
+    background: transparent;
+    border: none;
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #212327;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn-text:hover {
+    background: #f9fafb;
+}
+
+.btn {
+    height: 40px;
+    padding: 0 16px;
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-secondary {
+    background: #FFFFFF;
+    border: 1px solid #E6E6E6;
+    color: #212327;
+}
+
+.btn-secondary:hover {
+    background: #f9fafb;
+    border-color: #6F2EFF;
+}
+
+.btn-primary {
+    background: #1957DB;
+    color: #FFFFFF;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #1548c2;
+}
+
+.btn-primary:active {
+    background: #123a9f;
+}
+
+/* Scrollbar Styling */
+.form-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-content::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+.form-content::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+.form-content::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Config Section */
+.config-section {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #E6E6E6;
+}
+
+.config-section:last-child {
+    border-bottom: none;
+}
+
+.config-section-title {
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #212327;
+    margin: 0 0 8px 0;
+}
+
+.config-section-description {
+    font-family: 'Figtree', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #636A77;
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+}
+
+/* Toggle Switch */
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 40px;
+    height: 24px;
+    background: #E6E6E6;
+    border-radius: 12px;
+    transition: background 0.2s;
+}
+
+.toggle-switch::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-checkbox:checked + .toggle-switch {
+    background: #6F2EFF;
+}
+
+.toggle-checkbox:checked + .toggle-switch::before {
+    transform: translateX(16px);
+}
+
+.toggle-status {
+    font-family: 'Figtree', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #636A77;
+}
+
+/* Button Section */
+.button-config-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.button-section-header {
+    width: 177px;
+    flex-shrink: 0;
+}
+
+.button-config-content {
+    flex: 1;
+}
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212327;
+    min-height: 40px;
+}
+
+.info-icon {
+    color: #636A77;
+}
+
+/* Add Button Container */
+.add-button-container {
+    padding: 16px;
+    border: 2px dashed #DCE1EA;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.add-button-container.has-buttons {
+    border: none;
+    padding: 0;
+    justify-content: flex-start;
+}
+
+.add-button-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: #1957DB;
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-button-link:hover {
+    color: #1548c2;
+}
+
+.add-button-link svg {
+    color: currentColor;
+}
+
+/* Button Form Item */
+.button-form-item {
+    border: 1px solid #E6E6E6;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    transition: opacity 0.2s;
+}
+
+.button-form-item.dragging {
+    opacity: 0.5;
+}
+
+.button-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #F9FAFB;
+    border-bottom: 1px solid #E6E6E6;
+    cursor: pointer;
+}
+
+.button-form-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.drag-handle {
+    width: 16px;
+    height: 16px;
+    color: #636A77;
+    cursor: grab;
+    flex-shrink: 0;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.chevron-icon {
+    width: 16px;
+    height: 16px;
+    color: #636A77;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+}
+
+.button-form-item.collapsed .chevron-icon {
+    transform: rotate(-90deg);
+}
+
+.button-form-title {
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #212327;
+}
+
+.delete-button-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #636A77;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.delete-button-btn:hover {
+    background: #FEF2F2;
+    color: #BE1B29;
+}
+
+.button-form-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.button-form-item.collapsed .button-form-body {
+    display: none;
+}
+
+/* Select Dropdown */
+select.text-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23636A77' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .stepper-sidebar {
+        width: 180px;
+    }
+
+    .form-field-label {
+        width: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    .interface-content-wrapper {
+        flex-direction: column;
+    }
+
+    .stepper-sidebar {
+        width: 100%;
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid #DCE1EA;
+        overflow-x: auto;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-field-label {
+        width: 100%;
+        min-height: auto;
+    }
+}

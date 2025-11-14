@@ -456,6 +456,59 @@
         </div>
     </div>
 
+    <!-- Create Interface Modal -->
+    <div id="createInterfaceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Interface</h2>
+                <button class="modal-close" id="closeInterfaceModalBtn">&times;</button>
+            </div>
+            <form id="createInterfaceForm">
+                <div class="form-group form-row">
+                    <label for="interfaceName" class="form-label text">Interface name <span class="required text-error">*</span></label>
+                    <div style="flex: 1;">
+                        <input type="text" id="interfaceName" class="form-input text" placeholder="Enter interface name" required>
+                        <div class="error-message" id="interfaceNameError"></div>
+                    </div>
+                </div>
+                <div class="form-group form-row">
+                    <label for="interfaceType" class="form-label text">Type <span class="required text-error">*</span></label>
+                    <div class="custom-select-wrapper">
+                        <button type="button" class="custom-select-trigger" id="interfaceTypeSelect">
+                            <span class="custom-select-value">Select</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="custom-select-dropdown" id="interfaceTypeDropdown">
+                            <div class="tool-type-option" data-type="form" data-title="Form">
+                                <div class="tool-type-title">Form</div>
+                                <div class="tool-type-description">Create structured form-based interfaces for collecting user input with defined fields and validation.</div>
+                            </div>
+                            <div class="tool-type-option" data-type="chat" data-title="Chat">
+                                <div class="tool-type-title">Chat</div>
+                                <div class="tool-type-description">Build conversational chat interfaces for natural, interactive agent communication.</div>
+                            </div>
+                            <div class="tool-type-option" data-type="chat-form" data-title="Chat + Form">
+                                <div class="tool-type-title">Chat + Form</div>
+                                <div class="tool-type-description">Combine form and chat patterns - start with a form to collect structured data, then continue with conversational chat.</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="interfaceType" name="interfaceType" required>
+                    </div>
+                </div>
+                <div class="form-group form-row">
+                    <label for="interfaceDescription" class="form-label text">Description</label>
+                    <textarea id="interfaceDescription" class="form-textarea text" placeholder="Enter interface description" rows="4"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelInterfaceBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Next</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="project.js"></script>
 </body>
 </html>

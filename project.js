@@ -504,9 +504,128 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Create Interface Modal
+    const createInterfaceModal = document.getElementById('createInterfaceModal');
+    const createInterfaceForm = document.getElementById('createInterfaceForm');
+    const closeInterfaceModalBtn = document.getElementById('closeInterfaceModalBtn');
+    const cancelInterfaceBtn = document.getElementById('cancelInterfaceBtn');
+
     if (createInterfaceFromEmpty) {
         createInterfaceFromEmpty.addEventListener('click', function() {
-            alert('Create interface functionality - to be implemented');
+            createInterfaceModal.classList.add('active');
+        });
+    }
+
+    if (closeInterfaceModalBtn) {
+        closeInterfaceModalBtn.addEventListener('click', function() {
+            createInterfaceModal.classList.remove('active');
+        });
+    }
+
+    if (cancelInterfaceBtn) {
+        cancelInterfaceBtn.addEventListener('click', function() {
+            createInterfaceModal.classList.remove('active');
+        });
+    }
+
+    // Interface Type Dropdown
+    const interfaceTypeSelect = document.getElementById('interfaceTypeSelect');
+    const interfaceTypeDropdown = document.getElementById('interfaceTypeDropdown');
+    const interfaceTypeInput = document.getElementById('interfaceType');
+
+    if (interfaceTypeSelect) {
+        const interfaceTypeValueDisplay = interfaceTypeSelect.querySelector('.custom-select-value');
+
+        interfaceTypeSelect.addEventListener('click', function(e) {
+            e.preventDefault();
+            interfaceTypeDropdown.classList.toggle('open');
+            interfaceTypeSelect.classList.toggle('open');
+        });
+
+        const interfaceTypeOptions = interfaceTypeDropdown.querySelectorAll('.tool-type-option');
+        interfaceTypeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.getAttribute('data-type');
+                const title = this.getAttribute('data-title');
+
+                interfaceTypeValueDisplay.textContent = title;
+                interfaceTypeValueDisplay.classList.add('selected');
+                interfaceTypeInput.value = value;
+
+                interfaceTypeDropdown.classList.remove('open');
+                interfaceTypeSelect.classList.remove('open');
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!interfaceTypeSelect.contains(e.target) && !interfaceTypeDropdown.contains(e.target)) {
+                interfaceTypeDropdown.classList.remove('open');
+                interfaceTypeSelect.classList.remove('open');
+            }
+        });
+    }
+
+    // Handle interface form submission
+    if (createInterfaceForm) {
+        const interfaceNameInput = document.getElementById('interfaceName');
+        const interfaceNameError = document.getElementById('interfaceNameError');
+
+        // Clear error on input
+        interfaceNameInput.addEventListener('input', function() {
+            interfaceNameInput.classList.remove('error');
+            interfaceNameError.classList.remove('show');
+            interfaceNameError.textContent = '';
+        });
+
+        createInterfaceForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const interfaceName = interfaceNameInput.value.trim();
+            const interfaceType = interfaceTypeInput.value;
+            const interfaceDescription = document.getElementById('interfaceDescription').value;
+
+            // Clear previous errors
+            interfaceNameInput.classList.remove('error');
+            interfaceNameError.classList.remove('show');
+            interfaceNameError.textContent = '';
+
+            // Validate interface name
+            if (!interfaceName) {
+                interfaceNameInput.classList.add('error');
+                interfaceNameError.textContent = 'Name is required.';
+                interfaceNameError.classList.add('show');
+                return;
+            }
+
+            // Check for duplicate interface name
+            const interfaces = JSON.parse(localStorage.getItem('interfaces') || '[]');
+            const duplicateInterface = interfaces.find(i => i.name.toLowerCase() === interfaceName.toLowerCase() && i.project === projectName);
+
+            if (duplicateInterface) {
+                interfaceNameInput.classList.add('error');
+                interfaceNameError.textContent = 'An interface with this name already exists.';
+                interfaceNameError.classList.add('show');
+                return;
+            }
+
+            // Validate type
+            if (!interfaceType) {
+                alert('Please select an interface type');
+                return;
+            }
+
+            // Store interface data temporarily in localStorage
+            const interfaceData = {
+                name: interfaceName,
+                type: interfaceType,
+                description: interfaceDescription,
+                project: projectName
+            };
+            localStorage.setItem('currentInterfaceData', JSON.stringify(interfaceData));
+
+            // Redirect to the appropriate interface page based on type
+            window.location.href = `interface-${interfaceType}.html?name=${encodeURIComponent(interfaceName)}&project=${encodeURIComponent(projectName)}`;
         });
     }
 
